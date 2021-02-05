@@ -3,11 +3,25 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: rgb(232, 130, 12);
+  background: linear-gradient(
+    153deg,
+    rgba(232, 130, 12, 1) 0%,
+    rgba(249, 213, 106, 1) 100%
+  );
 }
 
-#App {
+.App {
   width: 100%;
   max-width: 800px;
+
+  h1 {
+    margin-bottom: 24px;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
 }
 
 .todos--list {
@@ -18,11 +32,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255,0.5);
+  margin-bottom: 8px;
   border-bottom: rgb(236, 236, 236) 1px solid;
-  &:last-child {
-    border-bottom: unset;
-  }
+  max-width: 300px;
+}
+.todo--row:hover{
+  background-color: rgba(255, 255, 255,1);
 }
 
 .todo--image {
@@ -32,12 +50,12 @@ body {
   img {
     width: 100%;
   }
-  button{
+  button {
     margin-left: 16px;
   }
 }
 
-.todo--buttons{
+.todo--buttons {
   display: flex;
   button {
     margin-left: 16px;
@@ -45,11 +63,11 @@ body {
     border-radius: 50%;
     height: 24px;
     width: 24px;
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(155, 155, 155);
     color: white;
     cursor: pointer;
     font-weight: bold;
-    transition: .3s all;
+    transition: 0.3s all;
     transform: scale(0.9);
     outline: 0;
   }
@@ -58,20 +76,39 @@ body {
     transform: scale(1);
   }
 
-  img{
+  img {
     transform: scale(0.9);
-    transition: all .3s;
+    transition: all 0.3s;
     cursor: pointer;
   }
-  img:hover{
+  img:hover {
     transform: scale(1);
   }
 }
 
 .todo--item {
-  color: #111;
+  color: rgb(223, 223, 223);
+  max-width: 110px;
+  height: auto;
+  word-wrap: break-word;
 }
 
 .--hover {
-  color: rgb(173, 173, 173);
+  font-weight: 500;
+  color: rgb(53, 50, 50);
+}
+
+#input{
+  color: white;
+}
+.MuiFormControl-root{
+  label, .MuiInputBase-input{
+    color:white !important;
+  }
+  .MuiInput-underline:after{
+    border-bottom:3px solid white !important;
+  }
+  .MuiInput-underline:before{
+    border-bottom:1px solid white !important;
+  }
 }
