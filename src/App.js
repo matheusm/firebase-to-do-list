@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./assets/scss/style.scss";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import { db } from "./config/firebase";
 import firebase from "firebase/app";
+import TodoRow from "./components/TodoRow";
 
 function App() {
   const [todoInput, setTodoInput] = useState("");
+  const [todosData, setTodosData] = useState([]);
 
   function addTodo(e) {
     e.preventDefault();
-
+    let todos = [];
     db.collection("todos")
       .add({
         todo: todoInput,
@@ -25,12 +27,32 @@ function App() {
       });
 
     setTodoInput("");
+
+    db.collection("todos")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          todos.push(doc.data());
+        });
+        setTodosData(todos);
+      });
   }
+
+  useEffect(() => {
+    let todos = [];
+    db.collection("todos")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          todos.push(doc.data());
+        });
+        setTodosData(todos);
+      });
+  }, []);
 
   return (
     <div className="App">
       <h1>To-do List</h1>
-
       <form>
         <TextField
           id="input-todo"
@@ -38,10 +60,20 @@ function App() {
           value={todoInput}
           onChange={(e) => setTodoInput(e.target.value)}
         />
-        <Button variant="contained" type="submit" onClick={addTodo}>
+        <Button
+          variant="contained"
+          type="submit"
+          onClick={addTodo}
+          style={{ display: "none" }}
+        >
           OI
         </Button>
       </form>
+      <section className="todos--list">
+        {todosData.map((item) => (
+          <TodoRow todo={item.todo} inprogress={item.inprogress} />
+        ))}
+      </section>
     </div>
   );
 }

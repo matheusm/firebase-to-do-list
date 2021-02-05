@@ -10,3 +10,21 @@ body{
     width: 100%;
     max-width: 800px;
 }
+
+.todos--list{
+    margin-top: 32px;
+}
+
+.todo--row{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0 ;
+}
+
+.todo--image{
+    max-width: 24px;
+    max-height: 24px;
+    img{
+        width: 100%;
+    }
+}
