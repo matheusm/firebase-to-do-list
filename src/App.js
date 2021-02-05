@@ -8,11 +8,11 @@ import TodoRow from "./components/TodoRow";
 
 function App() {
   const [todoInput, setTodoInput] = useState("");
-  const [todosData, setTodosData] = useState([]);
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   function addTodo(e) {
     e.preventDefault();
-    let todos = [];
     db.collection("todos")
       .add({
         todo: todoInput,
@@ -27,27 +27,27 @@ function App() {
       });
 
     setTodoInput("");
+  }
 
-    db.collection("todos")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          todos.push(doc.data());
-        });
-        setTodosData(todos);
-      });
+  async function getTodos() {
+    await db
+      .collection("todos")
+      .onSnapshot((querySnapshot) =>{
+        setTodos(
+          querySnapshot.docs.map(function (doc) {
+            return {
+              id: doc.id,
+              todo: doc.data().todo,
+              inprogress: doc.data().inprogress,
+            };
+          })
+        );
+      })
   }
 
   useEffect(() => {
-    let todos = [];
-    db.collection("todos")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          todos.push(doc.data());
-        });
-        setTodosData(todos);
-      });
+    getTodos();
+    setLoading(false)
   }, []);
 
   return (
@@ -70,9 +70,10 @@ function App() {
         </Button>
       </form>
       <section className="todos--list">
-        {todosData.map((item) => (
-          <TodoRow todo={item.todo} inprogress={item.inprogress} />
-        ))}
+        {!loading &&
+          todos.map((item, key) => (
+            <TodoRow key={key} todo={item.todo} inprogress={item.inprogress} />
+          ))}
       </section>
     </div>
   );
