@@ -16,7 +16,7 @@ function App() {
     db.collection("todos")
       .add({
         todo: todoInput,
-        inprogress: false,
+        inprogress: true,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(function (docRef) {
@@ -30,24 +30,22 @@ function App() {
   }
 
   async function getTodos() {
-    await db
-      .collection("todos")
-      .onSnapshot((querySnapshot) =>{
-        setTodos(
-          querySnapshot.docs.map(function (doc) {
-            return {
-              id: doc.id,
-              todo: doc.data().todo,
-              inprogress: doc.data().inprogress,
-            };
-          })
-        );
-      })
+    await db.collection("todos").onSnapshot((querySnapshot) => {
+      setTodos(
+        querySnapshot.docs.map(function (doc) {
+          return {
+            id: doc.id,
+            todo: doc.data().todo,
+            inprogress: doc.data().inprogress,
+          };
+        })
+      );
+    });
   }
 
   useEffect(() => {
     getTodos();
-    setLoading(false)
+    setLoading(false);
   }, []);
 
   return (
@@ -70,9 +68,15 @@ function App() {
         </Button>
       </form>
       <section className="todos--list">
+        To-Do
         {!loading &&
           todos.map((item, key) => (
-            <TodoRow key={key} todo={item.todo} inprogress={item.inprogress} />
+            <TodoRow
+              key={key}
+              id={item.id}
+              todo={item.todo}
+              inprogress={item.inprogress}
+            />
           ))}
       </section>
     </div>
