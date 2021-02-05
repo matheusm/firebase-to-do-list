@@ -57,6 +57,7 @@ function App() {
           label="Write a Todo"
           value={todoInput}
           onChange={(e) => setTodoInput(e.target.value)}
+          color="quaternary"
         />
         <Button
           variant="contained"
@@ -68,7 +69,6 @@ function App() {
         </Button>
       </form>
       <section className="todos--list">
-        To-Do
         {!loading &&
           todos.map((item, key) => (
             <TodoRow
